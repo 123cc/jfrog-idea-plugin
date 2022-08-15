@@ -111,12 +111,12 @@ public abstract class ScanManager extends ScanManagerBase {
      * Scan and update dependency components.
      */
     private void scanAndUpdate(boolean quickScan, ProgressIndicator indicator, @Nullable Collection<DataNode<LibraryDependencyData>> libraryDependencies) {
-        // Don't scan if Xray is not configured
-        if (!GlobalSettings.getInstance().areCredentialsSet()) {
-            getLog().error("Xray server is not configured.");
-            return;
-        }
-        // Prevent multiple simultaneous scans
+        // Don't scan if Xray is not configured   不通过 xray 进行漏洞扫描
+//        if (!GlobalSettings.getInstance().areCredentialsSet()) {
+//            getLog().error("Xray server is not configured.");
+//            return;
+//        }
+        // Prevent multiple simultaneous scans  防止多个任务同时执行漏洞扫描
         if (!scanInProgress.compareAndSet(false, true)) {
             if (!quickScan) {
                 getLog().info("Scan already in progress");
@@ -124,6 +124,7 @@ public abstract class ScanManager extends ScanManagerBase {
             return;
         }
         try {
+            // 刷新相关性->收集->扫描并存储到缓存->更新视图
             // Refresh dependencies -> Collect -> Scan and store to cache -> Update view
             refreshDependencies(getRefreshDependenciesCbk(quickScan, indicator), libraryDependencies);
         } finally {
@@ -144,6 +145,7 @@ public abstract class ScanManager extends ScanManagerBase {
                 if (project.isDisposed()) {
                     return;
                 }
+                // 请求漏洞扫描
                 scanAndUpdate(quickScan, new ProgressIndicatorImpl(indicator), libraryDependencies);
             }
         };
@@ -180,9 +182,16 @@ public abstract class ScanManager extends ScanManagerBase {
             @Override
             public void onSuccess(@Nullable DataNode<ProjectData> externalProject) {
                 try {
+                    //构建 树结构
                     buildTree(externalProject);
+
+                    // 扫描 并 缓存
                     scanAndCacheArtifacts(indicator, quickScan);
+
+                    // 将 xray 扫描 漏洞添加到树中
                     addXrayInfoToTree(getScanResults());
+
+                    // 设置扫描结果
                     setScanResults();
                     DumbService.getInstance(mainProject).smartInvokeLater(() -> runInspections());
                 } catch (ProcessCanceledException e) {

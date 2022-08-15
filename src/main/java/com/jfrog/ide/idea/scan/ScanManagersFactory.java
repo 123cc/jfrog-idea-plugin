@@ -55,17 +55,20 @@ public class ScanManagersFactory {
      * @param libraryDependencies - Dependencies to use in Gradle scans.
      */
     public void startScan(boolean quickScan, @Nullable Collection<DataNode<LibraryDependencyData>> libraryDependencies) {
+        // idea 是否在为项目建立索引
         if (DumbService.isDumb(mainProject)) { // If intellij is still indexing the project
             return;
         }
+        // 是否存在上一次扫描
         if (isScanInProgress()) {
             Logger.getInstance(mainProject).info("Previous scan still running...");
             return;
         }
-        if (!GlobalSettings.getInstance().areCredentialsSet()) {
-            Logger.getInstance(mainProject).error("Xray server is not configured.");
-            return;
-        }
+        // 检查xray 服务请求配置
+//        if (!GlobalSettings.getInstance().areCredentialsSet()) {
+//            Logger.getInstance(mainProject).error("Xray server is not configured.");
+//            return;
+//        }
         try {
             IssuesTree issuesTree = IssuesTree.getInstance(mainProject);
             LicensesTree licensesTree = LicensesTree.getInstance(mainProject);
@@ -76,6 +79,7 @@ public class ScanManagersFactory {
             resetViews(issuesTree, licensesTree);
             NavigationService.clearNavigationMap(mainProject);
             for (ScanManager scanManager : scanManagers.values()) {
+                //循环扫描各项目 漏洞
                 scanManager.asyncScanAndUpdateResults(quickScan, libraryDependencies);
             }
         } catch (IOException | RuntimeException e) {
