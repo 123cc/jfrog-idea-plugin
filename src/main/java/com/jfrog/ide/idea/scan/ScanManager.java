@@ -127,11 +127,16 @@ public abstract class ScanManager extends ScanManagerBase implements Disposable 
     private void scanAndUpdate(boolean quickScan, ProgressIndicator indicator) {
         try {
             indicator.setText("1/3: Building dependency tree");
+            // 1、扫描本地maven 依赖转为 结构树
+            // 2、将扫描结果 setScanResult();
             buildTree(!quickScan);
             indicator.setText("2/3: Xray scanning project dependencies");
+            //3、扫描更新缓存
             scanAndCacheArtifacts(indicator, quickScan);
             indicator.setText("3/3: Finalizing");
+            //4、添加扫描结果
             addXrayInfoToTree(getScanResults());
+            // 5、将扫描结果 赋值给 视图属性做展示
             setScanResults();
             DumbService.getInstance(project).smartInvokeLater(this::runInspections);
         } catch (ProcessCanceledException e) {
@@ -160,10 +165,11 @@ public abstract class ScanManager extends ScanManagerBase implements Disposable 
                 if (project.isDisposed()) {
                     return;
                 }
-                if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
-                    getLog().warn("Xray server is not configured.");
-                    return;
-                }
+                //跳过xray配置验证
+//                if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
+//                    getLog().warn("Xray server is not configured.");
+//                    return;
+//                }
                 // Prevent multiple simultaneous scans
                 if (!scanInProgress.compareAndSet(false, true)) {
                     if (!quickScan) {
@@ -171,6 +177,7 @@ public abstract class ScanManager extends ScanManagerBase implements Disposable 
                     }
                     return;
                 }
+                // 扫描 及 更新缓存
                 scanAndUpdate(quickScan, new ProgressIndicatorImpl(indicator));
             }
 

@@ -87,18 +87,21 @@ public class ScanManagersFactory implements Disposable {
             return;
         }
 
-        if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
-            tryConnectionDetailsFromJfrogCli();
-            return;
-        }
+//        if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
+//            tryConnectionDetailsFromJfrogCli();
+//            return;
+//        }
 
         project.getMessageBus().syncPublisher(ApplicationEvents.ON_SCAN_LOCAL_STARTED).update();
         ExecutorService executor = Executors.newFixedThreadPool(3);
         try {
-            refreshScanManagers(getScanLogicType(), executor);
+//            refreshScanManagers(getScanLogicType(), executor);
+            //指定扫描方式
+            refreshScanManagers(ScanLogicType.GraphScan, executor);
             NavigationService.clearNavigationMap(project);
             for (ScanManager scanManager : scanManagers.values()) {
                 try {
+                    //TODO 根据项目发起检测
                     scanManager.asyncScanAndUpdateResults(quickScan);
                 } catch (RuntimeException e) {
                     logError(Logger.getInstance(), "", e, !quickScan);
