@@ -62,19 +62,20 @@ public class JFrogLocalToolWindow extends AbstractJFrogToolWindow {
     @Override
     public JPanel createActionToolbar() {
         JPanel toolbarPanel = createComponentsTreePanel(true);
-        // Add export menu
-        ExportMenu exportMenu = new ExportMenu(project);
-        componentsTree.addFilterMenu(exportMenu);
-        toolbarPanel.add(exportMenu.getMenuButton());
+        // Add export menu  移除导出按钮组件
+        //ExportMenu exportMenu = new ExportMenu(project);
+        //componentsTree.addFilterMenu(exportMenu);
+        //toolbarPanel.add(exportMenu.getMenuButton());
         return toolbarPanel;
     }
 
     @SuppressWarnings("DialogTitleCapitalization")
     @Override
     JComponent createMoreInfoView(boolean supported) {
-        if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
-            return ComponentUtils.createNoCredentialsView();
-        }
+        //More Info 面板需要 xray全局配置  注释掉 配置检查
+        //if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
+        //    return ComponentUtils.createNoCredentialsView();
+        //}
         JLabel title = new JBLabel(" More Info");
         title.setFont(title.getFont().deriveFont(TITLE_FONT_SIZE));
 

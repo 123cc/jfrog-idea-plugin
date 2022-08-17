@@ -13,6 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * 最终 dependencies 面板展示处理类
+ * 例如：
+ *   io.netty:netty-codec-http:4.1.31.Final ()
+ *
+ *
  * Created by Yahav Itzhak on 22 Nov 2017.
  */
 public class ComponentsTreeCellRenderer extends LabelBasedRenderer.Tree {

@@ -55,24 +55,28 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
      * @param supported - True if the current opened project is supported by the plugin.
      *                  If not, show the "Unsupported project type" message.
      */
+    // 初始化 插件显示面板 , 根据设置显示 具体面板布局, 其中  Vulnerabilities 面板在此设置
     public AbstractJFrogToolWindow(@NotNull Project project, boolean supported, ComponentsTree componentsTree) {
         super(true);
         this.projectBusConnection = project.getMessageBus().connect(this);
         this.appBusConnection = ApplicationManager.getApplication().getMessageBus().connect(this);
         this.componentsTree = componentsTree;
         this.project = project;
+        //组件面板  顶部按钮栏
         JPanel toolbar = createActionToolbar();
-
-        JComponent issuesPanel = createComponentsIssueDetailView();
+        //创建 Vulnerabilities 面板信息
+        //JComponent issuesPanel = createComponentsIssueDetailView();
 
         OnePixelSplitter leftVerticalSplit = new OnePixelSplitter(false, 0.5f);
         leftVerticalSplit.setFirstComponent(createComponentsTreeView());
-        leftVerticalSplit.setSecondComponent(issuesPanel);
+        //设置 issues(Vulnerabilities) 面板
+        //leftVerticalSplit.setSecondComponent(issuesPanel);
 
         rightVerticalSplit = new OnePixelSplitter(false, 0.6f);
         rightVerticalSplit.setVisible(false);
         rightVerticalSplit.setFirstComponent(leftVerticalSplit);
-        rightVerticalSplit.setSecondComponent(createMoreInfoView(supported));
+        //创建初始化 更多信息展示面板
+        //rightVerticalSplit.setSecondComponent(createMoreInfoView(supported));
 
         setToolbar(toolbar);
         setContent(rightVerticalSplit);
@@ -143,10 +147,10 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
         componentsTree.addFilterMenu(issueFilterMenu);
         toolbarPanel.add(issueFilterMenu.getFilterButton());
 
-        // Add licenses filter
-        LicenseFilterMenu licenseFilterMenu = createLicenseFilterMenu();
-        componentsTree.addFilterMenu(licenseFilterMenu);
-        toolbarPanel.add(licenseFilterMenu.getFilterButton());
+        // Add licenses filter  面板 licenses 按钮 注释掉
+        //LicenseFilterMenu licenseFilterMenu = createLicenseFilterMenu();
+        //componentsTree.addFilterMenu(licenseFilterMenu);
+        //toolbarPanel.add(licenseFilterMenu.getFilterButton());
 
         // Add scopes filter
         ScopeFilterMenu scopeFilterMenu = createScopeFilterMenu();
@@ -170,10 +174,12 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
      * @return the components tree panel
      */
     private JComponent createComponentsTreeView() {
+        // 组件主面板 title 标题定义
         JPanel componentsTreePanel = new JBPanel<>(new BorderLayout()).withBackground(UIUtil.getTableBackground());
         JLabel componentsTreeTitle = new JBLabel(getComponentsTreeTitle());
         componentsTreeTitle.setFont(componentsTreeTitle.getFont().deriveFont(TITLE_FONT_SIZE));
         componentsTreePanel.add(componentsTreeTitle, BorderLayout.LINE_START);
+        // 组件主面板 table 列展示定义
         JPanel treePanel = new JBPanel<>(new GridLayout()).withBackground(UIUtil.getTableBackground());
         TreeSpeedSearch treeSpeedSearch = new TreeSpeedSearch(componentsTree, ComponentUtils::getPathSearchString, true);
         treePanel.add(treeSpeedSearch.getComponent(), BorderLayout.WEST);
@@ -183,6 +189,8 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
     }
 
     /**
+     * 创建 issues 面板，及右侧table面板
+     *
      * Create the issues details panel. That is the bottom right issues table.
      *
      * @return the issues details panel
@@ -200,8 +208,8 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
      * Update the issues table according to the user choice in the dependency tree.
      */
     public void updateIssuesTable() {
-        List<DependencyTree> selectedNodes = getSelectedNodes();
-        issuesTable.updateIssuesTable(getIssuesToDisplay(selectedNodes), selectedNodes);
+        //List<DependencyTree> selectedNodes = getSelectedNodes();
+        //issuesTable.updateIssuesTable(getIssuesToDisplay(selectedNodes), selectedNodes);
     }
 
     /**
@@ -229,7 +237,8 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
     public void onConfigurationChange() {
         rightVerticalSplit.setSecondComponent(createMoreInfoView(true));
         resetViews();
-        issuesTable.addTableSelectionListener(moreInfoPanel);
+        // issues 漏洞 table 监听设置
+        //issuesTable.addTableSelectionListener(moreInfoPanel);
     }
 
     /**
@@ -240,18 +249,19 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
         appBusConnection.subscribe(ApplicationEvents.ON_CONFIGURATION_DETAILS_CHANGE, () ->
                 ApplicationManager.getApplication().invokeLater(this::onConfigurationChange));
 
-        // Component selection listener
-        componentsTree.addTreeSelectionListener(e -> {
-            updateIssuesTable();
-            if (e == null || e.getNewLeadSelectionPath() == null) {
-                return;
-            }
-            ComponentIssueDetails.createIssuesDetailsView(moreInfoPanel, (DependencyTree) e.getNewLeadSelectionPath().getLastPathComponent());
-            // Scroll back to the beginning of the scrollable panel
-            ApplicationManager.getApplication().invokeLater(() -> issuesDetailsScroll.getViewport().setViewPosition(new Point()));
-        });
+        // Component selection listener  注释 组件选择触发事件
+        // componentsTree.addTreeSelectionListener(e -> {
+        //     updateIssuesTable();
+        //     if (e == null || e.getNewLeadSelectionPath() == null) {
+        //         return;
+        //     }
+        //     ComponentIssueDetails.createIssuesDetailsView(moreInfoPanel, (DependencyTree) e.getNewLeadSelectionPath().getLastPathComponent());
+        //     // Scroll back to the beginning of the scrollable panel
+        //     ApplicationManager.getApplication().invokeLater(() -> issuesDetailsScroll.getViewport().setViewPosition(new Point()));
+        // });
 
-        issuesTable.addTableSelectionListener(moreInfoPanel);
+        // issues 漏洞 table 监听设置
+        //issuesTable.addTableSelectionListener(moreInfoPanel);
         componentsTree.addOnProjectChangeListener(projectBusConnection);
         componentsTree.addRightClickListener();
     }

@@ -36,8 +36,10 @@ public class LocalComponentsTree extends ComponentsTree {
         }
         FilterManager filterManager = LocalFilterManager.getInstance(this.project);
         DependencyTree filteredRoot = filterManager.applyFilters(project);
+        //TODO 验证此项值是否影响 dependencies 中 issue展示
         filteredRoot.setIssues(filteredRoot.processTreeIssues());
-        filteredRoot.setViolatedLicenses(filteredRoot.processTreeViolatedLicenses());
+        // licenses 相关面板已注释掉无需在 赋值
+        //filteredRoot.setViolatedLicenses(filteredRoot.processTreeViolatedLicenses());
         appendProjectWhenReady(filteredRoot);
         DumbService.getInstance(this.project).smartInvokeLater(() -> ScanManagersFactory.getInstance(this.project).runInspectionsForAllScanManagers());
     }

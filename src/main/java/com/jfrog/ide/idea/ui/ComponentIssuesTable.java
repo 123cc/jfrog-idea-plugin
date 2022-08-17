@@ -28,6 +28,7 @@ public class ComponentIssuesTable extends JBTable {
             new RowSorter.SortKey(COMPONENT.ordinal(), SortOrder.ASCENDING));
 
     ComponentIssuesTable() {
+        // 返回数据结构与 面板视图的绑定
         setModel(new IssuesTableModel());
         setShowGrid(true);
         setDefaultRenderer(Object.class, new IssuesTableCellRenderer());
@@ -71,6 +72,8 @@ public class ComponentIssuesTable extends JBTable {
      * 1. Severity - from high to low.
      * 2. Component - direct before transitive issues.
      */
+    // 对列进行排序， 严重性 从高到低
+    // 设置组件面板table展示列信息
     private TableRowSorter<TableModel> createTableRowSorter(TableModel model, Set<String> selectedComponents) {
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
         sorter.setComparator(SEVERITY.ordinal(), Comparator.comparing(o -> ((Severity) o)));
