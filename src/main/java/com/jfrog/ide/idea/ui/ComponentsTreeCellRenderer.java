@@ -33,8 +33,11 @@ public class ComponentsTreeCellRenderer extends LabelBasedRenderer.Tree {
 
         // Add issues-count to tree node. We make sure the issues count is shown only on trees scanned by Xray,
         // by showing it only when the severity level is higher than unknown.
-        if (scanTreeNode.getIssueCount() > 0 && topIssue.getSeverity().isHigherThan(Severity.Unknown)) {
-            cellRenderer.setText(scanTreeNode + " (" + scanTreeNode.getIssueCount() + ")");
+        //if (scanTreeNode.getIssueCount() > 0 && topIssue.getSeverity().isHigherThan(Severity.Unknown)) {
+        //    cellRenderer.setText(scanTreeNode + " (" + scanTreeNode.getIssueCount() + ")");
+        //}
+        if (topIssue.getSeverity().isHigherThan(Severity.Unknown) && StringUtils.isNotBlank(scanTreeNode.getRecommendVersion())) {
+            cellRenderer.setText(scanTreeNode + " (推荐版本：" + scanTreeNode.getRecommendVersion()+ ")");
         }
 
         if (!scanTreeNode.getViolatedLicenses().isEmpty()) {

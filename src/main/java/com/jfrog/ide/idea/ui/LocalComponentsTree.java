@@ -36,7 +36,6 @@ public class LocalComponentsTree extends ComponentsTree {
         }
         FilterManager filterManager = LocalFilterManager.getInstance(this.project);
         DependencyTree filteredRoot = filterManager.applyFilters(project);
-        //TODO 验证此项值是否影响 dependencies 中 issue展示
         filteredRoot.setIssues(filteredRoot.processTreeIssues());
         // licenses 相关面板已注释掉无需在 赋值
         //filteredRoot.setViolatedLicenses(filteredRoot.processTreeViolatedLicenses());

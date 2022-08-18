@@ -237,7 +237,7 @@ public abstract class AbstractJFrogToolWindow extends SimpleToolWindowPanel impl
     public void onConfigurationChange() {
         rightVerticalSplit.setSecondComponent(createMoreInfoView(true));
         resetViews();
-        // issues 漏洞 table 监听设置
+        //issue漏洞 table 数据 selection 监听设置
         //issuesTable.addTableSelectionListener(moreInfoPanel);
     }
 

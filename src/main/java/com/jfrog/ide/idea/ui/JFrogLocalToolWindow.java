@@ -41,7 +41,7 @@ public class JFrogLocalToolWindow extends AbstractJFrogToolWindow {
 
     @Override
     String getComponentsTreeTitle() {
-        return " Dependencies (Issues #)";
+        return " Dependencies (Recommend Version #)";
     }
 
     @Override
@@ -73,9 +73,9 @@ public class JFrogLocalToolWindow extends AbstractJFrogToolWindow {
     @Override
     JComponent createMoreInfoView(boolean supported) {
         //More Info 面板需要 xray全局配置  注释掉 配置检查
-        //if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
-        //    return ComponentUtils.createNoCredentialsView();
-        //}
+        if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
+            return ComponentUtils.createNoCredentialsView();
+        }
         JLabel title = new JBLabel(" More Info");
         title.setFont(title.getFont().deriveFont(TITLE_FONT_SIZE));
 
