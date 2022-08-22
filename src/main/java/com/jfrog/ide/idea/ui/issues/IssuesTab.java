@@ -59,13 +59,14 @@ public class IssuesTab {
         IssueFilterMenu issueFilterMenu = new IssueFilterMenu(mainProject);
         JPanel issuesFilterButton = new FilterButton(issueFilterMenu, "Severity", "Select severities to show");
         JPanel toolbar = ComponentUtils.createActionToolbar("Severities toolbar", issuesFilterButton, issuesTree);
-
-        issuesPanel = createComponentsIssueDetailView();
+        // 组件及issue 详情 面板
+        //issuesPanel = createComponentsIssueDetailView();
         issuesRightHorizontalSplit = new OnePixelSplitter(true, 0.55f);
-        issuesRightHorizontalSplit.setFirstComponent(createComponentsDetailsView(supported));
-        issuesRightHorizontalSplit.setSecondComponent(issuesPanel);
+        //issuesRightHorizontalSplit.setFirstComponent(createComponentsDetailsView(supported));
+        //issuesRightHorizontalSplit.setSecondComponent(issuesPanel);
 
         OnePixelSplitter centralVerticalSplit = new OnePixelSplitter(false, 0.20f);
+        //组件树 面板
         centralVerticalSplit.setFirstComponent(createIssuesComponentsTreeView());
         centralVerticalSplit.setSecondComponent(issuesRightHorizontalSplit);
 
@@ -81,7 +82,7 @@ public class IssuesTab {
      * @return the issues tree panel
      */
     private JComponent createIssuesComponentsTreeView() {
-        JLabel issuesCount = new JBLabel("Issues (0) ");
+        JLabel issuesCount = new JBLabel("Recommend Version");
 
         JPanel componentsTreePanel = new JBPanel(new BorderLayout()).withBackground(UIUtil.getTableBackground());
         JLabel componentsTreeTitle = new JBLabel(" Components Tree");
@@ -176,9 +177,9 @@ public class IssuesTab {
      * Called after a change in the credentials.
      */
     public void onConfigurationChange() {
-        issuesRightHorizontalSplit.setFirstComponent(createComponentsDetailsView(true));
-        issuesPanel.validate();
-        issuesPanel.repaint();
+//        issuesRightHorizontalSplit.setFirstComponent(createComponentsDetailsView(true));
+//        issuesPanel.validate();
+//        issuesPanel.repaint();
     }
 
     /**
@@ -188,22 +189,22 @@ public class IssuesTab {
         issuesTree.addTreeExpansionListener();
 
         // Issues component selection listener
-        issuesTree.addTreeSelectionListener(e -> {
-            updateIssuesTable();
-            if (e == null || e.getNewLeadSelectionPath() == null) {
-                return;
-            }
+//        issuesTree.addTreeSelectionListener(e -> {
+//            updateIssuesTable();
+//            if (e == null || e.getNewLeadSelectionPath() == null) {
+//                return;
+//            }
             // Color the issues count panel
-            for (TreePath path : e.getPaths()) {
-                JPanel issueCountPanel = issuesCountPanels.get(path);
-                if (issueCountPanel != null) {
-                    issueCountPanel.setBackground(e.isAddedPath(path) ? UIUtil.getTreeSelectionBackground(true) : UIUtil.getTableBackground());
-                }
-            }
-            ComponentIssueDetails.createIssuesDetailsView(issuesDetailsPanel, (DependenciesTree) e.getNewLeadSelectionPath().getLastPathComponent());
+//            for (TreePath path : e.getPaths()) {
+//                JPanel issueCountPanel = issuesCountPanels.get(path);
+//                if (issueCountPanel != null) {
+//                    issueCountPanel.setBackground(e.isAddedPath(path) ? UIUtil.getTreeSelectionBackground(true) : UIUtil.getTableBackground());
+//                }
+//            }
+//            ComponentIssueDetails.createIssuesDetailsView(issuesDetailsPanel, (DependenciesTree) e.getNewLeadSelectionPath().getLastPathComponent());
             // Scroll back to the beginning of the scrollable panel
-            ApplicationManager.getApplication().invokeLater(() -> issuesDetailsScroll.getViewport().setViewPosition(new Point()));
-        });
+//            ApplicationManager.getApplication().invokeLater(() -> issuesDetailsScroll.getViewport().setViewPosition(new Point()));
+//        });
 
         issuesTree.addOnProjectChangeListener(mainProject.getMessageBus().connect());
         issuesTree.addRightClickListener();

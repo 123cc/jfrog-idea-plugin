@@ -71,6 +71,10 @@ public class IssuesTree extends BaseTree {
         addTreeExpansionListener(issuesTreeExpansionListener);
     }
 
+    /**
+     * 填充 组件树
+     * @param root
+     */
     public void populateTree(DependenciesTree root) {
         super.populateTree(root);
         issuesTreeExpansionListener.setIssuesCountPanel();
@@ -93,7 +97,8 @@ public class IssuesTree extends BaseTree {
         filterManager.applyFilters(project, filteredRoot, new DependenciesTree());
         filteredRoot.setIssues(filteredRoot.processTreeIssues());
         appendProjectWhenReady(filteredRoot);
-        calculateIssuesCount();
+        //设置 组件树面板  最右侧  issue 数量
+        //alculateIssuesCount();
     }
 
     @Override
@@ -108,13 +113,19 @@ public class IssuesTree extends BaseTree {
         resetIssuesCountPanels();
     }
 
+    /**
+     * 重置 issues 数量
+     */
     private void resetIssuesCountPanels() {
         if (issuesCount != null && issuesCountPanel != null) {
-            issuesCount.setText("Issues (0) ");
+            issuesCount.setText("Recommend Version ");
             issuesCountPanel.removeAll();
         }
     }
 
+    /**
+     * 检索issue数量，填充到应的 组件行中
+     */
     private void calculateIssuesCount() {
         ApplicationManager.getApplication().invokeLater(() -> {
             DependenciesTree root = (DependenciesTree) getModel().getRoot();

@@ -41,9 +41,9 @@ public class JFrogToolWindow {
     private void addContent(ContentManager contentManager, @NotNull Project project, boolean supported) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content issuesContent = contentFactory.createContent(issuesTab.createIssuesViewTab(project, supported), "Issues", false);
-        Content licenseContent = contentFactory.createContent(licensesTab.createLicenseInfoTab(project, supported), "Licenses Info", false);
+//        Content licenseContent = contentFactory.createContent(licensesTab.createLicenseInfoTab(project, supported), "Licenses Info", false);
         contentManager.addContent(issuesContent);
-        contentManager.addContent(licenseContent);
+//        contentManager.addContent(licenseContent);
     }
 
     private void createOnConfigurationChangeHandler() {
@@ -61,7 +61,7 @@ public class JFrogToolWindow {
         MessageBusConnection projectBusConnection = mainProject.getMessageBus().connect();
         projectBusConnection.subscribe(ApplicationEvents.ON_SCAN_FILTER_ISSUES_CHANGE, () -> ApplicationManager.getApplication().invokeLater(() -> {
             IssuesTree.getInstance(mainProject).applyFiltersForAllProjects();
-            issuesTab.updateIssuesTable();
+//            issuesTab.updateIssuesTable();
         }));
 
         projectBusConnection.subscribe(ApplicationEvents.ON_SCAN_FILTER_LICENSES_CHANGE, () -> ApplicationManager.getApplication().invokeLater(() ->
@@ -71,6 +71,6 @@ public class JFrogToolWindow {
         issuesTab.registerListeners();
 
         // Licenses tab listeners
-        licensesTab.registerListeners();
+        //licensesTab.registerListeners();
     }
 }

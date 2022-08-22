@@ -43,6 +43,7 @@ public class IssuesTreeExpansionListener implements TreeExpansionListener {
             return;
         }
         DependenciesTree root = (DependenciesTree) model.getRoot();
+        // 设置 issue面板 中 issue数量
         setIssuesCountPanel(root, ComponentUtils.getTreePath(root));
     }
 
@@ -54,9 +55,10 @@ public class IssuesTreeExpansionListener implements TreeExpansionListener {
             TreePath childTreePath = ComponentUtils.getTreePath(child);
             JPanel issueCountPanel = issuesCountPanels.get(childTreePath);
             if (issueCountPanel != null) {
-                ComponentUtils.setIssueCountPanel(child.getIssueCount(), issueCountPanel);
+                ComponentUtils.setIssueCountPanel(child.getRecommendVersion(), issueCountPanel);
             } else {
-                issueCountPanel = ComponentUtils.createIssueCountLabel(child.getIssueCount(), issuesComponentsTree.getRowBounds(0).height);
+                //当组件有漏洞时, 设置当前漏洞数量
+                issueCountPanel = ComponentUtils.createIssueCountLabel(child.getRecommendVersion(), issuesComponentsTree.getRowBounds(0).height);
                 issuesCountPanels.put(childTreePath, issueCountPanel);
             }
             issuesCountPanel.add(issueCountPanel);

@@ -6,6 +6,7 @@ import com.jfrog.ide.idea.ui.utils.IconUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jfrog.build.extractor.scan.DependenciesTree;
 import org.jfrog.build.extractor.scan.Issue;
+import org.jfrog.build.extractor.scan.Severity;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -14,6 +15,8 @@ import java.awt.*;
 import static com.intellij.util.ui.tree.WideSelectionTreeUI.TREE_TABLE_TREE_KEY;
 
 /**
+ * components issue 组件结构树展示
+ *
  * Created by Yahav Itzhak on 22 Nov 2017.
  */
 public class IssuesTreeCellRenderer extends JBDefaultTreeCellRenderer {
@@ -30,7 +33,12 @@ public class IssuesTreeCellRenderer extends JBDefaultTreeCellRenderer {
         // Set icon
         Issue topIssue = scanTreeNode.getTopIssue();
         cellRenderer.setIcon(IconUtils.load(StringUtils.lowerCase(topIssue.getSeverity().toString())));
+//        if (topIssue.getSeverity().isHigherThan(Severity.Unknown) && StringUtils.isNotBlank(scanTreeNode.getRecommendVersion())) {
+//            cellRenderer.setText(scanTreeNode+" (推荐版本："+ scanTreeNode.getIssueCount()+")");
+//        }
+
 
         return cellRenderer;
     }
+
 }

@@ -14,6 +14,7 @@ import com.intellij.util.ui.UIUtil;
 import com.jfrog.ide.idea.actions.CollapseAllAction;
 import com.jfrog.ide.idea.actions.ExpandAllAction;
 import com.jfrog.ide.idea.ui.configuration.XrayGlobalConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.jfrog.build.extractor.scan.DependenciesTree;
 
 import javax.swing.*;
@@ -47,11 +48,12 @@ public class ComponentUtils {
         return label;
     }
 
-    public static JPanel createIssueCountLabel(int issueCount, int rowHeight) {
+    public static JPanel createIssueCountLabel(String recommendVersion, int rowHeight) {
         JPanel issueCountPanel = new JBPanel(new BorderLayout()).withBackground(UIUtil.getTableBackground());
         JLabel issueCountLabel = new JBLabel();
         issueCountPanel.add(issueCountLabel, BorderLayout.EAST);
-        setIssueCountPanel(issueCount, issueCountPanel);
+        //当组件有漏洞时, 设置当前漏洞数量
+        setIssueCountPanel(recommendVersion, issueCountPanel);
 
         issueCountLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         issueCountLabel.setMinimumSize(new JBDimension(issueCountLabel.getMinimumSize().width, rowHeight));
@@ -62,10 +64,13 @@ public class ComponentUtils {
         return issueCountPanel;
     }
 
-    public static void setIssueCountPanel(int issueCount, JPanel issueCountPanel) {
+    public static void setIssueCountPanel(String recommendVersion, JPanel issueCountPanel) {
+//    public static void setIssueCountPanel(String recommendVersion, JPanel issueCountPanel) {
         JLabel issueCountLabel = (JLabel) issueCountPanel.getComponent(0);
-        if (issueCount != 0) {
-            issueCountLabel.setText(" (" + issueCount + ") ");
+        if (StringUtils.isNotBlank(recommendVersion)) {
+//        if (issueCount > 0) {
+            issueCountLabel.setText(" (推荐版本：" + recommendVersion + ") ");
+//            issueCountLabel.setText(" (" + issueCount + ") ");
         } else {
             issueCountLabel.setText("");
         }
