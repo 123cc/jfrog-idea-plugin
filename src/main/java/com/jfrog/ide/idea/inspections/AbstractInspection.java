@@ -45,7 +45,10 @@ public abstract class AbstractInspection extends LocalInspectionTool implements 
      * @param problemsHolder - The "Show in dependencies tree" option will be registered in this container.
      * @param element        - The Psi element in the package descriptor
      */
-    void visitElement(ProblemsHolder problemsHolder, PsiElement element) {
+    void visitElement(ProblemsHolder problemsHolder, PsiElement element,boolean isOnTheFly) {
+        if(!isOnTheFly){
+            return;
+        }
         List<DependenciesTree> dependencies = getDependencies(element);
         if (CollectionUtils.isEmpty(dependencies)) {
             return;

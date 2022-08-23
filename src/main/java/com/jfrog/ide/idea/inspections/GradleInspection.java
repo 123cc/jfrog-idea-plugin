@@ -47,7 +47,7 @@ public class GradleInspection extends AbstractInspection {
             @Override
             public void visitLiteralExpression(@NotNull GrLiteral literal) {
                 super.visitLiteralExpression(literal);
-                GradleInspection.this.visitElement(holder, literal);
+                GradleInspection.this.visitElement(holder, literal,isOnTheFly);
             }
         });
     }

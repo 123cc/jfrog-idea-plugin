@@ -35,7 +35,7 @@ public class GoInspection extends AbstractInspection {
             @Override
             public void visitModuleSpec(VgoModuleSpec element) {
                 super.visitPsiElement(element);
-                GoInspection.this.visitElement(holder, element);
+                GoInspection.this.visitElement(holder, element,isOnTheFly);
             }
         };
     }
