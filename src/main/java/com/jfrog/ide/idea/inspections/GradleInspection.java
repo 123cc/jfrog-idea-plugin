@@ -78,10 +78,18 @@ public class GradleInspection extends AbstractInspection {
     @Override
     boolean isDependency(PsiElement element) {
         PsiElement parent = element.getParent();
-        for (int i = 0; i < 6; i++, parent = parent.getParent()) {
-            if (StringUtils.startsWith(parent.getText(), "dependencies")) {
-                return true;
+        if (!Objects.isNull(parent.getParent())) {
+            for (int i = 0; i < 6; i++, parent = parent.getParent()) {
+                if (Objects.isNull(parent)) {
+                    return false;
+                } else {
+                    if (StringUtils.startsWith(parent.getText(), "dependencies")) {
+                        return true;
+                    }
+                }
             }
+        } else {
+            return false;
         }
         return false;
     }
