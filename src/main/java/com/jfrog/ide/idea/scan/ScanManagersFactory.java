@@ -5,14 +5,10 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
-import com.jetbrains.python.sdk.PythonSdkUtil;
 import com.jfrog.ide.common.configuration.ServerConfig;
 import com.jfrog.ide.common.persistency.ScanCache;
 import com.jfrog.ide.common.persistency.XrayScanCache;
@@ -95,9 +91,7 @@ public class ScanManagersFactory implements Disposable {
         project.getMessageBus().syncPublisher(ApplicationEvents.ON_SCAN_LOCAL_STARTED).update();
         ExecutorService executor = Executors.newFixedThreadPool(3);
         try {
-//            refreshScanManagers(getScanLogicType(), executor);
-            //指定扫描方式
-            refreshScanManagers(ScanLogicType.GraphScan, executor);
+            refreshScanManagers(getScanLogicType(), executor);
             NavigationService.clearNavigationMap(project);
             for (ScanManager scanManager : scanManagers.values()) {
                 try {
@@ -214,22 +208,22 @@ public class ScanManagersFactory implements Disposable {
      * @param scanManagers - Scan managers list
      */
     private void createPypiScanManagerIfApplicable(Map<Integer, ScanManager> scanManagers, ExecutorService executor) {
-        try {
-            for (Module module : ModuleManager.getInstance(project).getModules()) {
-                Sdk pythonSdk = PythonSdkUtil.findPythonSdk(module);
-                if (pythonSdk == null) {
-                    continue;
-                }
-                int projectHash = Utils.getProjectIdentifier(pythonSdk.getName(), pythonSdk.getHomePath());
-                ScanManager scanManager = this.scanManagers.get(projectHash);
-                if (scanManager == null) {
-                    scanManager = new PypiScanManager(project, pythonSdk, executor);
-                }
-                scanManagers.put(projectHash, scanManager);
-            }
-        } catch (NoClassDefFoundError noClassDefFoundError) {
-            // The 'python' plugins is not installed.
-        }
+//        try {
+//            for (Module module : ModuleManager.getInstance(project).getModules()) {
+//                Sdk pythonSdk = PythonSdkUtil.findPythonSdk(module);
+//                if (pythonSdk == null) {
+//                    continue;
+//                }
+//                int projectHash = Utils.getProjectIdentifier(pythonSdk.getName(), pythonSdk.getHomePath());
+//                ScanManager scanManager = this.scanManagers.get(projectHash);
+//                if (scanManager == null) {
+//                    scanManager = new PypiScanManager(project, pythonSdk, executor);
+//                }
+//                scanManagers.put(projectHash, scanManager);
+//            }
+//        } catch (NoClassDefFoundError noClassDefFoundError) {
+//            // The 'python' plugins is not installed.
+//        }
     }
 
     private void createScanManagersForPackageDirs(Set<String> packageDirs, Map<Integer, ScanManager> scanManagers,
@@ -310,9 +304,9 @@ public class ScanManagersFactory implements Disposable {
                 case NPM:
                     scanManager = new NpmScanManager(project, dir, executor);
                     break;
-                case GO:
-                    scanManager = new GoScanManager(project, dir, executor);
-                    break;
+//                case GO:
+//                    scanManager = new GoScanManager(project, dir, executor);
+//                    break;
                 default:
                     return;
             }

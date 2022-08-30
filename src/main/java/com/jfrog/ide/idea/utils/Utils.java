@@ -76,17 +76,18 @@ public class Utils {
      * @throws IOException if the version is not supported, or in case of connection error to Xray.
      */
     public static ScanLogicType getScanLogicType() throws IOException {
-        ServerConfig server = GlobalSettings.getInstance().getServerConfig();
-        XrayClient client = createXrayClientBuilder(server, Logger.getInstance()).build();
-        Version xrayVersion = client.system().version();
-
-        if (GraphScanLogic.isSupportedInXrayVersion(xrayVersion)) {
-            return ScanLogicType.GraphScan;
-        }
-        if (ComponentSummaryScanLogic.isSupportedInXrayVersion(xrayVersion)) {
-            return ScanLogicType.ComponentSummary;
-        }
-        throw new IOException("Unsupported JFrog Xray version.");
+        return ScanLogicType.GraphScan;
+//        ServerConfig server = GlobalSettings.getInstance().getServerConfig();
+//        XrayClient client = createXrayClientBuilder(server, Logger.getInstance()).build();
+//        Version xrayVersion = client.system().version();
+//
+//        if (GraphScanLogic.isSupportedInXrayVersion(xrayVersion)) {
+//            return ScanLogicType.GraphScan;
+//        }
+//        if (ComponentSummaryScanLogic.isSupportedInXrayVersion(xrayVersion)) {
+//            return ScanLogicType.ComponentSummary;
+//        }
+//        throw new IOException("Unsupported JFrog Xray version.");
     }
 
     public static void sendUsageReport(String techName) {

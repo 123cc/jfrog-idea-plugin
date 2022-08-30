@@ -134,6 +134,10 @@ public class ServerConfigImpl implements ServerConfig {
         return isNotBlank(xrayUrl) && isAuthenticationConfigured();
     }
 
+    public boolean isXrayUrl() {
+        return isNotBlank(xrayUrl);
+    }
+
     public boolean isArtifactoryConfigured() {
         return isNotBlank(artifactoryUrl) && isAuthenticationConfigured();
     }

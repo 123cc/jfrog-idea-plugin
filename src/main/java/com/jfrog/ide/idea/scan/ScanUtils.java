@@ -41,13 +41,13 @@ public class ScanUtils {
             // Maven plugin is not installed
         }
         // Check if Pypi SDK exist
-        try {
-            if (!PypiScanManager.getAllPythonSdks().isEmpty()) {
-                return true;
-            }
-        } catch (NoClassDefFoundError ignore) {
-            // Maven plugin is not installed
-        }
+//        try {
+//            if (!PypiScanManager.getAllPythonSdks().isEmpty()) {
+//                return true;
+//            }
+//        } catch (NoClassDefFoundError ignore) {
+//            // Maven plugin is not installed
+//        }
 
         // Check if npm, Gradle, or Go projects exist
         Set<Path> scanPaths = createScanPaths(Maps.newHashMap(), project);

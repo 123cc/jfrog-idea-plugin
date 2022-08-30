@@ -73,7 +73,10 @@ public class JFrogLocalToolWindow extends AbstractJFrogToolWindow {
     @Override
     JComponent createMoreInfoView(boolean supported) {
         //More Info 面板需要 xray全局配置  注释掉 配置检查
-        if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
+        //if (!GlobalSettings.getInstance().areXrayCredentialsSet())
+        //改为  只判断 url
+        //if (!GlobalSettings.getInstance().areXrayCredentialsSetUrl())
+        if (!GlobalSettings.getInstance().areXrayCredentialsSetUrl()) {
             return ComponentUtils.createNoCredentialsView();
         }
         JLabel title = new JBLabel(" More Info");
