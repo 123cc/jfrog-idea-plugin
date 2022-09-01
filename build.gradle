@@ -31,7 +31,7 @@ repositories {
         url "https://releases.jfrog.io/artifactory/oss-snapshots"
     }
     maven{
-        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        url 'https://maven.aliyun.com/repository/public'
     }
 }
 
