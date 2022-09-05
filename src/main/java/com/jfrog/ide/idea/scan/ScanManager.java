@@ -166,10 +166,10 @@ public abstract class ScanManager extends ScanManagerBase implements Disposable 
                     return;
                 }
                 //跳过xray配置验证
-//                if (!GlobalSettings.getInstance().areXrayCredentialsSet()) {
-//                    getLog().warn("Xray server is not configured.");
-//                    return;
-//                }
+                if (!GlobalSettings.getInstance().areXrayCredentialsSetUrl()) {
+                    getLog().warn("Xray server is not configured.");
+                    return;
+                }
                 // Prevent multiple simultaneous scans
                 if (!scanInProgress.compareAndSet(false, true)) {
                     if (!quickScan) {
