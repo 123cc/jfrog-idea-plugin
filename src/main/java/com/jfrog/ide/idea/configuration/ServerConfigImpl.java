@@ -109,6 +109,9 @@ public class ServerConfigImpl implements ServerConfig {
     @Deprecated
     private String xraySettingsCredentialsKey = XRAY_SETTINGS_KEY;
 
+    @Tag
+    private boolean enableLocalCacheArtifact;
+
     ServerConfigImpl() {
     }
 
@@ -128,6 +131,7 @@ public class ServerConfigImpl implements ServerConfig {
         this.connectionTimeout = builder.connectionTimeout;
         this.jfrogSettingsCredentialsKey = builder.jfrogSettingsCredentialsKey;
         this.xraySettingsCredentialsKey = builder.xraySettingsCredentialsKey;
+        this.enableLocalCacheArtifact = builder.enableLocalCacheArtifact;
     }
 
     public boolean isXrayConfigured() {
@@ -269,6 +273,11 @@ public class ServerConfigImpl implements ServerConfig {
     @Override
     public int getConnectionTimeout() {
         return defaultIfNull(this.connectionTimeout, ConnectionTimeoutSpinner.RANGE.initial);
+    }
+
+    @Override
+    public boolean enableLocalCacheArtifact() {
+        return this.enableLocalCacheArtifact;
     }
 
     public String getJFrogSettingsCredentialsKey() {
@@ -416,8 +425,16 @@ public class ServerConfigImpl implements ServerConfig {
         this.connectionDetailsFromEnv = connectionDetailsFromEnv;
     }
 
+    public void setEnableLocalCacheArtifact(boolean enableLocalCacheArtifact) {
+        this.enableLocalCacheArtifact = enableLocalCacheArtifact;
+    }
+
     public boolean isConnectionDetailsFromEnv() {
         return connectionDetailsFromEnv;
+    }
+
+    public boolean isEnableLocalCacheArtifact() {
+        return enableLocalCacheArtifact;
     }
 
     void setConnectionRetries(int connectionRetries) {
@@ -534,6 +551,7 @@ public class ServerConfigImpl implements ServerConfig {
         private boolean connectionDetailsFromEnv;
         private int connectionRetries;
         private int connectionTimeout;
+        private boolean enableLocalCacheArtifact;
 
         public ServerConfigImpl build() {
             return new ServerConfigImpl(this);
@@ -611,6 +629,11 @@ public class ServerConfigImpl implements ServerConfig {
 
         public Builder setXraySettingsCredentialsKey(String xraySettingsCredentialsKey) {
             this.xraySettingsCredentialsKey = xraySettingsCredentialsKey;
+            return this;
+        }
+
+        public Builder setEnableLocalCacheArtifact(boolean enableLocalCacheArtifact) {
+            this.enableLocalCacheArtifact = enableLocalCacheArtifact;
             return this;
         }
     }

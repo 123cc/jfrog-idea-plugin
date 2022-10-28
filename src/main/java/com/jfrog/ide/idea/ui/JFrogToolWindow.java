@@ -20,11 +20,11 @@ public class JFrogToolWindow {
     void initToolWindow(@NotNull ToolWindow toolWindow, @NotNull Project project, boolean localProjectSupported, boolean buildsConfigured) {
         ContentManager contentManager = toolWindow.getContentManager();
         JFrogLocalToolWindow jfrogLocalContent = new JFrogLocalToolWindow(project, localProjectSupported);
-        JFrogCiToolWindow jFrogCiContent = new JFrogCiToolWindow(project, buildsConfigured);
-        addContent(contentManager, jfrogLocalContent, jFrogCiContent);
+//        JFrogCiToolWindow jFrogCiContent = new JFrogCiToolWindow(project, buildsConfigured);
+        addContent(contentManager, jfrogLocalContent);
     }
 
-    private void addContent(ContentManager contentManager, JFrogLocalToolWindow jfrogLocalContent, JFrogCiToolWindow jfrogBuildsContent) {
+    private void addContent(ContentManager contentManager, JFrogLocalToolWindow jfrogLocalContent) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content localContent = contentFactory.createContent(jfrogLocalContent, "Local", false);
         contentManager.addContent(localContent);

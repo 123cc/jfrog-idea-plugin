@@ -80,6 +80,7 @@ public class JFrogGlobalConfiguration implements Configurable, Configurable.NoSc
     private HyperlinkLabel policyInstructions;
     private HyperlinkLabel watchInstructions;
     private JBPasswordField accessToken;
+    private JCheckBox enableLocalCacheArtifact;
 
     // Authentication types
     private JRadioButton usernamePasswordRadioButton;
@@ -97,6 +98,19 @@ public class JFrogGlobalConfiguration implements Configurable, Configurable.NoSc
         initAuthenticationMethod();
         initPolicy();
         initLinks();
+        initLocalCacheArtifact();
+    }
+
+    private void initLocalCacheArtifact() {
+        enableLocalCacheArtifact.addActionListener(listener->{
+            JBCheckBox jb = (JBCheckBox) listener.getSource();
+            if(!jb.isSelected()) {
+                ServerConfigImpl oldConfig = GlobalSettings.getInstance().getServerConfig();
+                if (oldConfig != null && !oldConfig.isEnableLocalCacheArtifact()) {
+                    reset();
+                }
+            }
+        });
     }
 
     @Nullable
@@ -339,6 +353,7 @@ public class JFrogGlobalConfiguration implements Configurable, Configurable.NoSc
                 .setConnectionDetailsFromEnv(connectionDetailsFromEnv.isSelected())
                 .setConnectionRetries(connectionRetries.getNumber())
                 .setConnectionTimeout(connectionTimeout.getNumber())
+                .setEnableLocalCacheArtifact(enableLocalCacheArtifact.isSelected())
                 .build();
 
         return !serverConfig.equals(GlobalSettings.getInstance().getServerConfig());
@@ -407,6 +422,7 @@ public class JFrogGlobalConfiguration implements Configurable, Configurable.NoSc
             connectionRetries.setValue(serverConfig.getConnectionRetries());
             connectionTimeout.setValue(serverConfig.getConnectionTimeout());
             connectionDetailsFromEnv.setSelected(serverConfig.isConnectionDetailsFromEnv());
+            enableLocalCacheArtifact.setSelected(serverConfig.enableLocalCacheArtifact());
         } else {
             clearText(platformUrl, xrayUrl, artifactoryUrl, username, password);
             excludedPaths.setText(DEFAULT_EXCLUSIONS);
@@ -414,6 +430,7 @@ public class JFrogGlobalConfiguration implements Configurable, Configurable.NoSc
             project.setText("");
             watches.setText("");
             connectionDetailsFromEnv.setSelected(false);
+            enableLocalCacheArtifact.setSelected(false);
             connectionRetries.setValue(ConnectionRetriesSpinner.RANGE.initial);
             connectionTimeout.setValue(ConnectionTimeoutSpinner.RANGE.initial);
         }

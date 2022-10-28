@@ -276,6 +276,14 @@
               <text value="Authentication method"/>
             </properties>
           </component>
+          <component id="8d0c9" class="com.intellij.ui.components.JBCheckBox" binding="enableLocalCacheArtifact">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Enable local cache artifact"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="eca9a" binding="settings" layout-manager="GridLayoutManager" row-count="16" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

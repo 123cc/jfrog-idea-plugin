@@ -69,6 +69,7 @@ public final class GlobalSettings implements PersistentStateComponent<GlobalSett
         serverConfig.setProject(this.serverConfig.getProject());
         serverConfig.setWatches(this.serverConfig.getWatches());
         serverConfig.setConnectionDetailsFromEnv(this.serverConfig.isConnectionDetailsFromEnv());
+        serverConfig.setEnableLocalCacheArtifact(this.serverConfig.isEnableLocalCacheArtifact());
         serverConfig.setConnectionRetries(this.serverConfig.getConnectionRetries());
         serverConfig.setConnectionTimeout(this.serverConfig.getConnectionTimeout());
         GlobalSettings settings = new GlobalSettings();
@@ -182,6 +183,7 @@ public final class GlobalSettings implements PersistentStateComponent<GlobalSett
         this.serverConfig.setProject(serverConfig.getProject());
         this.serverConfig.setWatches(serverConfig.getWatches());
         this.serverConfig.setConnectionDetailsFromEnv(serverConfig.isConnectionDetailsFromEnv());
+        this.serverConfig.setEnableLocalCacheArtifact(serverConfig.enableLocalCacheArtifact());
         this.serverConfig.setConnectionRetries(serverConfig.getConnectionRetries());
         this.serverConfig.setConnectionTimeout(serverConfig.getConnectionTimeout());
         this.serverConfig.setJFrogSettingsCredentialsKey(serverConfig.getJFrogSettingsCredentialsKey());
